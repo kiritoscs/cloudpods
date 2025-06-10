@@ -245,6 +245,8 @@ func InitHandlers(app *appsrv.Application) {
 		models.MiscResourceManager,
 
 		baremetalmodels.BaremetalProfileManager,
+
+		models.LighthouseManager,
 	} {
 		db.RegisterModelManager(manager)
 		handler := db.NewModelHandler(manager)

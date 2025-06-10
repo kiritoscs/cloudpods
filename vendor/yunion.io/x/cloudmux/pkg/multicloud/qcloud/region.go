@@ -542,6 +542,12 @@ func (self *SRegion) esRequest(apiName string, params map[string]string) (jsonut
 	return self.client.esRequest(apiName, params)
 }
 
+// Lighthouse
+func (self *SRegion) lighthouseRequest(apiName string, params map[string]string) (jsonutils.JSONObject, error) {
+	params["Region"] = self.Region
+	return self.client.lighthouseRequest(apiName, params)
+}
+
 func (self *SRegion) memcachedRequest(apiName string, params map[string]string) (jsonutils.JSONObject, error) {
 	params["Region"] = self.Region
 	return self.client.memcachedRequest(apiName, params)

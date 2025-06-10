@@ -198,6 +198,9 @@ type ICloudRegion interface {
 	GetIModelartsPoolSku() ([]ICloudModelartsPoolSku, error)
 
 	GetIMiscResources() ([]ICloudMiscResource, error)
+	// lighthouse 轻量应用服务器
+	GetILighthouses() ([]ICloudLighthouse, error)
+	GetILighthouseById(id string) (ICloudLighthouse, error)
 }
 
 type ICloudZone interface {
@@ -1642,4 +1645,28 @@ type ICloudMiscResource interface {
 	GetResourceType() string
 
 	GetConfig() jsonutils.JSONObject
+}
+
+// ICloudLighthouse 轻量应用服务器func (self *SRegion)
+type ICloudLighthouse interface {
+	IVirtualResource
+	IBillingResource
+
+	// GetVersion() string
+	// GetStorageType() string
+	// GetDiskSizeGb() int
+	// GetCategory() string
+
+	// GetInstanceType() string
+	// GetVcpuCount() int
+	// GetVmemSizeGb() int
+
+	// GetVpcId() string
+	// GetNetworkId() string
+	// GetZoneId() string
+	// IsMultiAz() bool
+
+	// GetAccessInfo() (*ElasticSearchAccessInfo, error)
+
+	// Delete() error
 }

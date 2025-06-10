@@ -89,7 +89,6 @@ require (
 	k8s.io/client-go v0.19.3
 	k8s.io/cluster-bootstrap v0.19.3
 	moul.io/http2curl/v2 v2.3.0
-	yunion.io/x/cloudmux v0.3.10-0-alpha.1.0.20241225022334-4e2172537c5f
 	yunion.io/x/executor v0.0.0-20230705125604-c5ac3141db32
 	yunion.io/x/jsonutils v1.0.1-0.20240930100528-1671a2d0d22f
 	yunion.io/x/log v1.0.1-0.20240305175729-7cf2d6cd5a91
@@ -270,4 +269,7 @@ require (
 	k8s.io/utils v0.0.0-20200729134348-d5654de09c73 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.0.1 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
+	yunion.io/x/cloudmux v0.3.10-0-alpha.1 // indirect
 )
+
+replace yunion.io/x/cloudmux => /Users/kiritoscs/Desktop/cloudmux

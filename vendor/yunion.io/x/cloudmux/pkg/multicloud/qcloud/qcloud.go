@@ -50,27 +50,30 @@ const (
 
 	QCLOUD_DEFAULT_REGION = "ap-beijing"
 
-	QCLOUD_API_VERSION           = "2017-03-12"
-	QCLOUD_CLB_API_VERSION       = "2018-03-17"
-	QCLOUD_BILLING_API_VERSION   = "2018-07-09"
-	QCLOUD_AUDIT_API_VERSION     = "2019-03-19"
-	QCLOUD_CAM_API_VERSION       = "2019-01-16"
-	QCLOUD_CDB_API_VERSION       = "2017-03-20"
-	QCLOUD_MARIADB_API_VERSION   = "2017-03-12"
-	QCLOUD_POSTGRES_API_VERSION  = "2017-03-12"
-	QCLOUD_SQLSERVER_API_VERSION = "2018-03-28"
-	QCLOUD_REDIS_API_VERSION     = "2018-04-12"
-	QCLOUD_MEMCACHED_API_VERSION = "2019-03-18"
-	QCLOUD_SSL_API_VERSION       = "2019-12-05"
-	QCLOUD_CDN_API_VERSION       = "2018-06-06"
-	QCLOUD_MONGODB_API_VERSION   = "2019-07-25"
-	QCLOUD_ES_API_VERSION        = "2018-04-16"
-	QCLOUD_DCDB_API_VERSION      = "2018-04-11"
-	QCLOUD_KAFKA_API_VERSION     = "2019-08-19"
-	QCLOUD_TKE_API_VERSION       = "2018-05-25"
-	QCLOUD_DNS_API_VERSION       = "2021-03-23"
-	QCLOUD_STS_API_VERSION       = "2018-08-13"
-	QCLOUD_TAG_API_VERSION       = "2018-08-13"
+	QCLOUD_API_VERSION            = "2017-03-12"
+	QCLOUD_CLB_API_VERSION        = "2018-03-17"
+	QCLOUD_BILLING_API_VERSION    = "2018-07-09"
+	QCLOUD_AUDIT_API_VERSION      = "2019-03-19"
+	QCLOUD_CAM_API_VERSION        = "2019-01-16"
+	QCLOUD_CDB_API_VERSION        = "2017-03-20"
+	QCLOUD_MARIADB_API_VERSION    = "2017-03-12"
+	QCLOUD_POSTGRES_API_VERSION   = "2017-03-12"
+	QCLOUD_SQLSERVER_API_VERSION  = "2018-03-28"
+	QCLOUD_REDIS_API_VERSION      = "2018-04-12"
+	QCLOUD_MEMCACHED_API_VERSION  = "2019-03-18"
+	QCLOUD_SSL_API_VERSION        = "2019-12-05"
+	QCLOUD_CDN_API_VERSION        = "2018-06-06"
+	QCLOUD_MONGODB_API_VERSION    = "2019-07-25"
+	QCLOUD_ES_API_VERSION         = "2018-04-16"
+	QCLOUD_DCDB_API_VERSION       = "2018-04-11"
+	QCLOUD_KAFKA_API_VERSION      = "2019-08-19"
+	QCLOUD_TKE_API_VERSION        = "2018-05-25"
+	QCLOUD_DNS_API_VERSION        = "2021-03-23"
+	QCLOUD_STS_API_VERSION        = "2018-08-13"
+	QCLOUD_TAG_API_VERSION        = "2018-08-13"
+	QCLOUD_WAF_API_VERSION        = "2018-01-25"
+	QCLOUD_ORG_API_VERSION        = "2021-03-31"
+	QCLOUD_LIGHTHOUSE_API_VERSION = "2020-03-24"
 )
 
 type QcloudClientConfig struct {
@@ -271,6 +274,12 @@ func stsRequest(client *common.Client, apiName string, params map[string]string,
 	debug bool) (jsonutils.JSONObject, error) {
 	domain := "sts.tencentcloudapi.com"
 	return _jsonRequest(client, domain, QCLOUD_STS_API_VERSION, apiName, params, updateFunc, debug, true)
+}
+
+// lighthouse
+func lighthouseRequest(client *common.Client, apiName string, params map[string]string, updateFunc func(string, string), debug bool) (jsonutils.JSONObject, error) {
+	domain := apiDomain("lighthouse", params)
+	return _jsonRequest(client, domain, QCLOUD_LIGHTHOUSE_API_VERSION, apiName, params, updateFunc, debug, true)
 }
 
 type qcloudResponse interface {
@@ -533,6 +542,15 @@ func (client *SQcloudClient) esRequest(apiName string, params map[string]string)
 	}
 
 	return esRequest(cli, apiName, params, client.cpcfg.UpdatePermission, client.debug)
+}
+
+func (client *SQcloudClient) lighthouseRequest(apiName string, params map[string]string) (jsonutils.JSONObject, error) {
+	cli, err := client.getDefaultClient(params)
+	if err != nil {
+		return nil, err
+	}
+
+	return lighthouseRequest(cli, apiName, params, client.cpcfg.UpdatePermission, client.debug)
 }
 
 func (client *SQcloudClient) kafkaRequest(apiName string, params map[string]string) (jsonutils.JSONObject, error) {
@@ -1017,6 +1035,7 @@ func (self *SQcloudClient) GetCapabilities() []string {
 		cloudprovider.CLOUD_CAPABILITY_KAFKA + cloudprovider.READ_ONLY_SUFFIX,
 		cloudprovider.CLOUD_CAPABILITY_CDN + cloudprovider.READ_ONLY_SUFFIX,
 		cloudprovider.CLOUD_CAPABILITY_CONTAINER + cloudprovider.READ_ONLY_SUFFIX,
+		cloudprovider.CLOUD_CAPABILITY_LIGHTHOUSE,
 	}
 	return caps
 }

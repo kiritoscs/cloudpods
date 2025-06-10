@@ -400,3 +400,11 @@ func (self *SRegion) GetIModelartsPoolSku() ([]cloudprovider.ICloudModelartsPool
 func (self *SRegion) GetIMiscResources() ([]cloudprovider.ICloudMiscResource, error) {
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIMiscResources")
 }
+
+func (self *SRegion) GetILighthouses() ([]cloudprovider.ICloudLighthouse, error) {
+	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetLighthouses")
+}
+
+func (self *SRegion) GetILighthouseById(id string) (cloudprovider.ICloudLighthouse, error) {
+	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetLighthouseById")
+}

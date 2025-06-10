@@ -2259,6 +2259,10 @@ func syncPublicCloudProviderInfo(
 			}
 		}
 	}
+	// 若云平台支持Lighthouse则同步Lighthouse资源
+	if utils.IsInStringArray(cloudprovider.CLOUD_CAPABILITY_LIGHTHOUSE, driver.GetCapabilities()) {
+		syncLighthouses(ctx, userCred, syncResults, provider, localRegion, remoteRegion)
+	}
 
 	return nil
 }
@@ -2805,5 +2809,23 @@ func syncMiscResources(
 	notes := fmt.Sprintf("SyncMiscResources for provider %s result: %s", provider.GetName(), result.Result())
 	log.Infof(notes)
 	provider.SyncError(result, notes, userCred)
+	return nil
+}
+
+func syncLighthouses(ctx context.Context, userCred mcclient.TokenCredential, syncResults SSyncResultSet, provider *SCloudprovider, localRegion *SCloudregion, remoteRegion cloudprovider.ICloudRegion) error {
+	iEss, err := remoteRegion.GetILighthouses()
+	if err != nil {
+		msg := fmt.Sprintf("GetILighthouses for region %s failed %s", remoteRegion.GetName(), err)
+		log.Errorf(msg)
+		return err
+	}
+
+	result := localRegion.SyncLighthouses(ctx, userCred, provider, iEss)
+	syncResults.Add(LighthouseManager, result)
+	msg := result.Result()
+	log.Infof("SyncLighthouses for region %s result: %s", localRegion.Name, msg)
+	if result.IsError() {
+		return result.AllError()
+	}
 	return nil
 }
